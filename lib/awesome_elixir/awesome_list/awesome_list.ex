@@ -4,9 +4,24 @@ defmodule AwesomeElixir.AwesomeList do
   """
 
   import Ecto.{Query, Changeset}, warn: false
-  alias AwesomeElixir.Repo
 
-  alias AwesomeElixir.AwesomeList.Section
+  alias AwesomeElixir.Repo
+  alias AwesomeElixir.AwesomeList.{Section, Repository}
+
+  @doc """
+  Returns the list of sections with preloaded repositories.
+
+  ## Examples
+
+      iex> list_sections()
+      [%Section{}, ...]
+
+  """
+  def list_sections_with_repositories do
+    Section
+    |> Repo.all
+    |> Repo.preload(:repositories)
+  end
 
   @doc """
   Returns the list of sections.
@@ -107,8 +122,6 @@ defmodule AwesomeElixir.AwesomeList do
     |> cast(attrs, [:name, :description])
     |> validate_required([:name, :description])
   end
-
-  alias AwesomeElixir.AwesomeList.Repository
 
   @doc """
   Returns the list of repositories.

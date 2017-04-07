@@ -6,5 +6,7 @@ defmodule AwesomeElixir.AwesomeList.Section do
     field :name, :string
 
     timestamps()
+
+    has_many :repositories, AwesomeElixir.AwesomeList.Repository
   end
 end
