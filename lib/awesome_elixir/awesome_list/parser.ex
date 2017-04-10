@@ -1,27 +1,25 @@
 defmodule AwesomeElixir.AwesomeList.Parser do
   def parse(list) do
-    _parse(list, [])
+    list
+    |> Enum.reduce([], &parse_line/2)
+    |> Enum.reverse
   end
 
-  def _parse([], result) do
-    Enum.reverse(result)
-  end
-
-  def _parse([line | rest], result) do
+  defp parse_line(line, result) do
     cond do
       String.match?(line, ~r/^#\s*\w+/) ->
         [section] = Regex.run(~r/^#\s*(.+)$/, line, capture: :all_but_first)
-        _parse(rest, [{:section, section} | result])
+        [{:section, section} | result]
       String.match?(line, ~r/^##\s*\w+/) ->
         [subsection] = Regex.run(~r/^##\s*(.+)$/, line, capture: :all_but_first)
-        _parse(rest, [{:subsection, subsection} | result])
+        [{:subsection, subsection} | result]
       String.match?(line, ~r/^\*\w+/) ->
         [subsection_description] = Regex.run(~r/^\*(.+)\*$/, line, capture: :all_but_first)
-        _parse(rest, [{:subsection_description, subsection_description} | result])
+        [{:subsection_description, subsection_description} | result]
       String.match?(line, ~r/^\*\s+\[\w+/) ->
         [name, link] = Regex.run(~r/^\*\s+\[(.+?)\]\((.+?)\)/, line, capture: :all_but_first)
-        _parse(rest, [{:link, name, link} | result])
-      true -> _parse(rest, result)
+        [{:link, name, link} | result]
+      true -> result
     end
   end
 end
