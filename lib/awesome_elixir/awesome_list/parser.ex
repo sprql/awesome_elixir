@@ -8,7 +8,8 @@ defmodule AwesomeElixir.AwesomeList.Parser do
   defp parse_line(line, result) do
     cond do
       String.match?(line, ~r/^#\s*\w+/) ->
-        [section] = Regex.run(~r/^#\s*(.+)$/, line, capture: :all_but_first)
+        [section] = Regex.run(~r/^#\s*([\w\s]+)/, line, capture: :all_but_first)
+        section = String.trim(section)
         [{:section, section} | result]
       String.match?(line, ~r/^##\s*\w+/) ->
         [subsection] = Regex.run(~r/^##\s*(.+)$/, line, capture: :all_but_first)
