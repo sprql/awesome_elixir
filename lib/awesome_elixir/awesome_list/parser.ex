@@ -1,4 +1,6 @@
 defmodule AwesomeElixir.AwesomeList.Parser do
+  alias AwesomeElixir.AwesomeList.Section
+
   defmodule Entity do
     defstruct url: nil, name: nil, section: {}
   end
@@ -8,7 +10,7 @@ defmodule AwesomeElixir.AwesomeList.Parser do
     Enum.reverse(result)
   end
 
-  defp parse_line(line, {current_section, result} = state) do
+  defp parse_line(line, {current_section, result} = state) when is_binary(line) do
     cond do
       String.match?(line, ~r/^##\s*\w+/) ->
         [subsection] = Regex.run(~r/^##\s*(.+)$/, line, capture: :all_but_first)
@@ -16,7 +18,7 @@ defmodule AwesomeElixir.AwesomeList.Parser do
 
       String.match?(line, ~r/^\*\w+/) ->
         [subsection_description] = Regex.run(~r/^\*(.+)\*$/, line, capture: :all_but_first)
-        {{current_section, subsection_description}, result}
+        {%Section{name: current_section, description: subsection_description}, result}
 
       String.match?(line, ~r/^\*\s+\[\w+/) ->
         [name, url] = Regex.run(~r/^\*\s+\[(.+?)\]\((.+?)\)/, line, capture: :all_but_first)
