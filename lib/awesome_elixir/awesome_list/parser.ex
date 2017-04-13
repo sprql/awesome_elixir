@@ -1,9 +1,5 @@
 defmodule AwesomeElixir.AwesomeList.Parser do
-  alias AwesomeElixir.AwesomeList.Section
-
-  defmodule Entity do
-    defstruct url: nil, name: nil, section: {}
-  end
+  alias AwesomeElixir.AwesomeList.{Entity, Section}
 
   def parse(list) do
     {_, result} = Enum.reduce(list, {nil, []}, &parse_line/2)
