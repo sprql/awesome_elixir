@@ -52,6 +52,25 @@ defmodule AwesomeElixir.AwesomeList do
   """
   def get_section!(id), do: Repo.get!(Section, id)
 
+
+  @doc """
+  Creates or updates a section.
+
+  ## Examples
+
+      iex> create_or_update_section(%{field: value})
+      {:ok, %Section{}}
+
+      iex> create_or_update_section(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_or_update_section(attrs \\ %{}) do
+    changeset = section_changeset(%Section{}, attrs)
+    on_conflict = [set: [description: changeset.data.description]]
+    Repo.insert(changeset, on_conflict: on_conflict, conflict_target: :name)
+  end
+
   @doc """
   Creates a section.
 
@@ -151,6 +170,10 @@ defmodule AwesomeElixir.AwesomeList do
 
   """
   def get_repository!(id), do: Repo.get!(Repository, id)
+
+  def get_repository_by_name(name) do
+    Repo.get_by(Repository, name: name)
+  end
 
   @doc """
   Creates a repository.

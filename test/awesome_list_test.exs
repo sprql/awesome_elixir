@@ -23,6 +23,25 @@ defmodule AwesomeElixir.AwesomeListTest do
     assert AwesomeList.get_section!(section.id) == section
   end
 
+  test "create_or_update_section/1 creates and updates a section" do
+    assert {:ok, %Section{} = section} = AwesomeList.create_or_update_section(@create_attrs)
+    assert section.description == "some description"
+    assert section.name == "some name"
+
+    section = %{section | description: "new description"}
+    params = Map.from_struct(section)
+    assert {:ok, %Section{} = section} = AwesomeList.create_or_update_section(params)
+
+    assert section.description == "new description"
+    assert section.name == "some name"
+  end
+
+  test "create_or_update_section/1 with invalid data returns error changeset" do
+    section = fixture(:section)
+    invalid_attrs = %{name: section.name, description: ""}
+    assert {:error, %Ecto.Changeset{}} = AwesomeList.create_or_update_section(invalid_attrs)
+  end
+
   test "create_section/1 with valid data creates a section" do
     assert {:ok, %Section{} = section} = AwesomeList.create_section(@create_attrs)
     assert section.description == "some description"
