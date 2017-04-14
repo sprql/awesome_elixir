@@ -9,5 +9,6 @@ defmodule AwesomeElixir.Repo.Migrations.CreateAwesomeElixir.AwesomeList.Section 
       timestamps()
     end
 
+    create index(:awesome_list_sections, [:name], unique: true)
   end
 end

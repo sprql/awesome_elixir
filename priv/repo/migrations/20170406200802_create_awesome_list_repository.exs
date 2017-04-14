@@ -13,5 +13,6 @@ defmodule AwesomeElixir.Repo.Migrations.CreateAwesomeElixir.AwesomeList.Reposito
       timestamps()
     end
 
+    create index(:awesome_list_repositories, [:name], unique: true)
   end
 end
