@@ -1,5 +1,11 @@
 defmodule AwesomeElixir.AwesomeList.Parser do
-  alias AwesomeElixir.AwesomeList.{Entity, Section}
+  defmodule Section do
+    defstruct [:name, :description]
+  end
+
+  defmodule Link do
+    defstruct [:name, :url, :section]
+  end
 
   def parse(list) do
     {_, result} = Enum.reduce(list, {nil, []}, &parse_line/2)
@@ -18,7 +24,7 @@ defmodule AwesomeElixir.AwesomeList.Parser do
 
       String.match?(line, ~r/^\*\s+\[\w+/) ->
         [name, url] = Regex.run(~r/^\*\s+\[(.+?)\]\((.+?)\)/, line, capture: :all_but_first)
-        {current_section, [%Entity{url: url, name: name, section: current_section} | result]}
+        {current_section, [%Link{url: url, name: name, section: current_section} | result]}
 
       true -> state
     end
