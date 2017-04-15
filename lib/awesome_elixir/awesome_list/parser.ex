@@ -4,7 +4,7 @@ defmodule AwesomeElixir.AwesomeList.Parser do
   end
 
   defmodule Link do
-    defstruct [:name, :url, :section]
+    defstruct [:name, :url]
   end
 
   def parse(list) do
@@ -24,7 +24,8 @@ defmodule AwesomeElixir.AwesomeList.Parser do
 
       String.match?(line, ~r/^\*\s+\[\w+/) ->
         [name, url] = Regex.run(~r/^\*\s+\[(.+?)\]\((.+?)\)/, line, capture: :all_but_first)
-        {current_section, [%Link{url: url, name: name, section: current_section} | result]}
+        link =  %Link{url: url, name: name}
+        {current_section, [{current_section, link} | result]}
 
       true -> state
     end
