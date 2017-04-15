@@ -17,10 +17,12 @@ defmodule AwesomeElixir.AwesomeList.ParserTest do
   test "parse/1 returns parsed awesome list", data do
     list = Parser.parse(data[:list])
 
-    assert Enum.member?(list, {%Section{name: "Actors", description: "Libraries and tools for working with actors and such."},
-                               %Link{name: "dflow", url: "https://github.com/dalmatinerdb/dflow"}})
+    section = %Section{name: "Actors", description: "Libraries and tools for working with actors and such."}
+    link = %Link{name: "dflow", url: "https://github.com/dalmatinerdb/dflow", description: "Pipelined flow processing engine."}
+    assert Enum.member?(list, {section, link})
 
-    assert Enum.member?(list, {%Section{name: "Books", description: "Fantastic books and e-books."},
-                               %Link{name: "Elixir in Action", url: "https://www.manning.com/books/elixir-in-action"}})
+    section = %Section{name: "Books", description: "Fantastic books and e-books."}
+    link = %Link{name: "Elixir in Action", url: "https://www.manning.com/books/elixir-in-action", description: "A brief intro to the language followed by a more detailed look at building production-ready systems in Elixir by Saša Jurić (2015)."}
+    assert Enum.member?(list, {section, link})
   end
 end
