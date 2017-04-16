@@ -67,8 +67,7 @@ defmodule AwesomeElixir.AwesomeList do
   """
   def create_or_update_section(attrs \\ %{}) do
     changeset = section_changeset(%Section{}, attrs)
-    on_conflict = [set: [description: changeset.data.description]]
-    Repo.insert(changeset, on_conflict: on_conflict, conflict_target: :name)
+    Repo.insert(changeset, on_conflict: :replace_all, conflict_target: :name)
   end
 
   @doc """
@@ -176,6 +175,23 @@ defmodule AwesomeElixir.AwesomeList do
   end
 
   @doc """
+  Creates or updates a repository.
+
+  ## Examples
+
+      iex> create_or_update_repository(%{field: value})
+      {:ok, %Section{}}
+
+      iex> create_or_update_repository(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_or_update_repository(attrs \\ %{}) do
+    changeset = repository_changeset(%Repository{}, attrs)
+    Repo.insert(changeset, on_conflict: :replace_all, conflict_target: :name)
+  end
+
+  @doc """
   Creates a repository.
 
   ## Examples
@@ -243,6 +259,6 @@ defmodule AwesomeElixir.AwesomeList do
   defp repository_changeset(%Repository{} = repository, attrs) do
     repository
     |> cast(attrs, [:section_id, :url, :name, :description, :stars, :last_updated_at])
-    |> validate_required([:section_id, :url, :name, :description, :stars, :last_updated_at])
+    |> validate_required([:section_id, :url, :name, :description])
   end
 end
