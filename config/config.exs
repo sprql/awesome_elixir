@@ -7,7 +7,8 @@ use Mix.Config
 
 # General application configuration
 config :awesome_elixir,
-  ecto_repos: [AwesomeElixir.Repo]
+  ecto_repos: [AwesomeElixir.Repo],
+  awesome_list_url: "https://raw.githubusercontent.com/h4cc/awesome-elixir/master/README.md"
 
 # Configures the endpoint
 config :awesome_elixir, AwesomeElixir.Web.Endpoint,
