@@ -11,6 +11,6 @@ defmodule AwesomeElixir.AwesomeList.WorkflowTest do
     assert Enum.count(repositories) > 1000
 
     assert Enum.member?(repositories, %{name: "dflow", url: "https://github.com/dalmatinerdb/dflow", description: "Pipelined flow processing engine."})
-    assert Enum.member?(repositories, %{name: "Elixir in Action", url: "https://www.manning.com/books/elixir-in-action", description: "A brief intro to the language followed by a more detailed look at building production-ready systems in Elixir by Saša Jurić (2015)."})
+    refute Enum.member?(repositories, %{name: "Elixir in Action", url: "https://www.manning.com/books/elixir-in-action", description: "A brief intro to the language followed by a more detailed look at building production-ready systems in Elixir by Saša Jurić (2015)."})
   end
 end

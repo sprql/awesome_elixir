@@ -35,9 +35,6 @@ defmodule AwesomeElixir.AwesomeListTest do
 
     assert updated_section.description == "new description"
     assert updated_section.name == "some name"
-
-    IO.inspect(section)
-    IO.inspect(updated_section)
   end
 
   test "create_or_update_section/1 with invalid data returns error changeset" do

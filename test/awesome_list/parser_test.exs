@@ -23,6 +23,6 @@ defmodule AwesomeElixir.AwesomeList.ParserTest do
 
     section = %Section{name: "Books", description: "Fantastic books and e-books."}
     link = %Link{name: "Elixir in Action", url: "https://www.manning.com/books/elixir-in-action", description: "A brief intro to the language followed by a more detailed look at building production-ready systems in Elixir by Saša Jurić (2015)."}
-    assert Enum.member?(list, {section, link})
+    refute Enum.member?(list, {section, link})
   end
 end
