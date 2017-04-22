@@ -1,0 +1,2 @@
+/* Phoenix flash messages */
+.alert:empty { display: none; }
