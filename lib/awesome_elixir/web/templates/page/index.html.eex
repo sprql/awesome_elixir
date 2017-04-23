@@ -3,3 +3,18 @@
     <li><%= link section.name, to: page_path(@conn, :index) %></li>
   <% end %>
 </ul>
+
+<%= for section <- @sections do %>
+  <h2><%= section.name %></h2>
+  <p><%= section.description %></p>
+  <table class="table">
+    <%= for repository <- section.repositories do %>
+      <tr>
+        <td><%= link repository.name, to: repository.url %></td>
+        <td><%= repository.description %></td>
+        <td><%= repository.last_updated_at %></td>
+        <td><%= repository.stars %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

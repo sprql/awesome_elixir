@@ -18,7 +18,8 @@ defmodule AwesomeElixir.AwesomeList do
 
   """
   def list_sections_with_repositories do
-    Section
+    query = from s in Section, order_by: [asc: :name]
+    query
     |> Repo.all
     |> Repo.preload(:repositories)
   end
