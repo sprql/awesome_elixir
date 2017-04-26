@@ -59,6 +59,7 @@ config :logger, level: :info
 #     config :awesome_elixir, AwesomeElixir.Web.Endpoint, server: true
 #
 
+import_config "shared.secret.exs"
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 import_config "prod.secret.exs"

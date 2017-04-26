@@ -17,3 +17,5 @@ config :awesome_elixir, AwesomeElixir.Repo,
   database: "awesome_elixir_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+import_config "shared.secret.exs"

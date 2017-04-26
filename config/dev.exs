@@ -56,3 +56,5 @@ config :awesome_elixir, AwesomeElixir.Repo,
   database: "awesome_elixir_dev",
   hostname: "localhost",
   pool_size: 10
+
+import_config "shared.secret.exs"
