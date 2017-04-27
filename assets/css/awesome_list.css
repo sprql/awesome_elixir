@@ -1,2 +1,30 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
 /* Phoenix flash messages */
 .alert:empty { display: none; }
+
+
+
+.repository-name {
+    width: 10em;
+}
+
+.repository-date-modified,
+.repository-stars {
+    white-space: nowrap;
+    width: 3em;
+}
+
+.repository-date-modified .fa {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.repository-stars {
+    text-align: right;
+}
+
+.repository-stars .fa {
+    color: rgba(255, 128, 0, 0.5);
+}
