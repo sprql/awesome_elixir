@@ -5,7 +5,7 @@
 </ul>
 
 <%= for section <- @sections do %>
-  <h2><%= section.name %></h2>
+  <h2 id="section-<%= section.id %>"><%= section.name %></h2>
   <p><%= section.description %></p>
   <table class="table">
   <%= for repository <- section.repositories do %>
