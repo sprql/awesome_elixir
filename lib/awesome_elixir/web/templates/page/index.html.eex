@@ -1,6 +1,6 @@
 <ul>
   <%= for section <- @sections do %>
-    <li><%= link section.name, to: page_path(@conn, :index) %></li>
+    <li><%= link section.name, to: page_path(@conn, :index) <> "#section-#{section.id}" %></li>
   <% end %>
 </ul>
 
