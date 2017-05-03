@@ -3,8 +3,9 @@ defmodule AwesomeElixir.Web.PageController do
 
   alias AwesomeElixir.AwesomeList
 
-  def index(conn, _params) do
-    sections = AwesomeList.list_sections_with_repositories
-    render conn, "index.html", sections: sections
+  def index(conn, params) do
+  	min_stars = String.to_integer(params["min_stars"] || "0")
+    repositories = AwesomeList.list_repositories_with_stars(min_stars)
+    render conn, "index.html", repositories: repositories
   end
 end

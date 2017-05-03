@@ -9,19 +9,21 @@ defmodule AwesomeElixir.AwesomeList do
   alias AwesomeElixir.AwesomeList.{Section, Repository}
 
   @doc """
-  Returns the list of sections with preloaded repositories.
+  Returns the list of repositories with preloaded sections filtered by stars.
 
   ## Examples
 
-      iex> list_sections()
-      [%Section{}, ...]
+      iex> list_repositories_with_stars()
+      [%Repository{}, ...]
 
   """
-  def list_sections_with_repositories do
-    query = from s in Section, order_by: [asc: :name]
+  def list_repositories_with_stars(min_stars \\ 0) do
+    query = from r in Repository,
+            where: r.stars >= ^min_stars
+
     query
     |> Repo.all
-    |> Repo.preload(:repositories)
+    |> Repo.preload(:section)
   end
 
   @doc """

@@ -14,17 +14,19 @@
   </ul>
 </section>
 
+<% sections = sections_for_repositories(@repositories) %>
+
 <ul>
-  <%= for section <- @sections do %>
+  <%= for section <- sections do %>
     <li><%= link section.name, to: page_path(@conn, :index) <> "#section-#{section.id}" %></li>
   <% end %>
 </ul>
 
-<%= for section <- @sections do %>
+<%= for section <- sections do %>
   <h2 id="section-<%= section.id %>"><%= section.name %></h2>
   <p><%= section.description %></p>
   <table class="table">
-  <%= for repository <- section.repositories do %>
+  <%= for repository <- repositories_for_section(@repositories, section) do %>
     <tr>
       <td class="repository-name"><%= link repository.name, to: repository.url %></td>
       <td><%= repository.description %></td>
