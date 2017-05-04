@@ -14,7 +14,7 @@ defmodule AwesomeElixir.AwesomeList.Scheduler do
 
   def handle_info(:work, state) do
     Task.Supervisor.start_child(AwesomeElixir.TaskSupervisor, fn ->
-      AwesomeElixir.AwesomeList.Workflow.import_awesome_list
+      AwesomeElixir.AwesomeList.Workflow.Import.run
     end)
 
     schedule_work()

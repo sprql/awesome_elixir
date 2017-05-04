@@ -4,8 +4,8 @@ defmodule AwesomeElixir.AwesomeList.WorkflowTest do
   alias AwesomeElixir.AwesomeList
   alias AwesomeElixir.AwesomeList.Workflow
 
-  test "import_awesome_list/1 import awesome list from url" do
-    Workflow.import_awesome_list
+  test "Import.run/1 import awesome list from url" do
+    Workflow.Import.run
 
     repositories = Enum.into(AwesomeList.list_repositories, [], &%{name: &1.name, url: &1.url, description: &1.description})
     assert Enum.count(repositories) > 1000
