@@ -3,7 +3,6 @@ defmodule AwesomeElixir.AwesomeList.Workflow do
   alias AwesomeElixir.AwesomeList.{Parser, Importer, GitHub}
 
   defmodule Import do
-    def run(url \\ Application.get_env(:awesome_elixir, :awesome_list_url)) do
       list = fetch_list(url)
       Importer.import(list)
     end
