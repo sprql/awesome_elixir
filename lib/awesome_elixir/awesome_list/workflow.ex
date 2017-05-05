@@ -3,8 +3,11 @@ defmodule AwesomeElixir.AwesomeList.Workflow do
   alias AwesomeElixir.AwesomeList.{Parser, Importer, GitHub}
 
   defmodule Import do
+    def run(url) do
       list = fetch_list(url)
+
       Importer.import(list)
+      delete_unlisted_repositories(list)
     end
 
     defp fetch_list(url) do
@@ -12,6 +15,13 @@ defmodule AwesomeElixir.AwesomeList.Workflow do
       response.body
       |> String.split("\n")
       |> Parser.parse
+    end
+
+    defp delete_unlisted_repositories(list) do
+      current_repositories_names = AwesomeList.list_repositories_names()
+      new_names = Enum.map(list, fn({_, repository}) -> repository.name end)
+      unlisted_names = current_repositories_names -- new_names
+      AwesomeList.delete_repositories_with_names(unlisted_names)
     end
   end
 

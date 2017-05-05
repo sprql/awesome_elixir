@@ -26,6 +26,10 @@ defmodule AwesomeElixir.AwesomeList do
     |> Repo.preload(:section)
   end
 
+  def list_repositories_names() do
+    Repo.all(from r in Repository, select: r.name)
+  end
+
   @doc """
   Returns the list of sections.
 
@@ -244,6 +248,10 @@ defmodule AwesomeElixir.AwesomeList do
   """
   def delete_repository(%Repository{} = repository) do
     Repo.delete(repository)
+  end
+
+  def delete_repositories_with_names(names) do
+    Repo.delete_all(from r in Repository, where: r.name in ^names)
   end
 
   @doc """

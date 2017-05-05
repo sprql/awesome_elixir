@@ -5,6 +5,8 @@ defmodule AwesomeElixir.AwesomeList.WorkflowTest do
   alias AwesomeElixir.AwesomeList.Workflow
 
   test "Import.run/1 import awesome list from url" do
+    {:ok, section} = AwesomeList.create_section(%{name: "test", description: "test"})
+    {:ok, repository} = AwesomeList.create_repository(%{name: "test-lib-name", url: "https://github.com/test", description: "test", section_id: section.id})
     Workflow.Import.run(Application.get_env(:awesome_elixir, :awesome_list_url))
 
     repositories = Enum.into(AwesomeList.list_repositories, [], &%{name: &1.name, url: &1.url, description: &1.description})
@@ -12,5 +14,6 @@ defmodule AwesomeElixir.AwesomeList.WorkflowTest do
 
     assert Enum.member?(repositories, %{name: "dflow", url: "https://github.com/dalmatinerdb/dflow", description: "Pipelined flow processing engine."})
     refute Enum.member?(repositories, %{name: "Elixir in Action", url: "https://www.manning.com/books/elixir-in-action", description: "A brief intro to the language followed by a more detailed look at building production-ready systems in Elixir by Saša Jurić (2015)."})
+    refute AwesomeElixir.Repo.get(AwesomeList.Repository, repository.id)
   end
 end
