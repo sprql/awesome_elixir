@@ -1,10 +1,11 @@
 defmodule AwesomeElixir.AwesomeList.Importer do
   alias AwesomeElixir.AwesomeList
-  alias AwesomeElixir.AwesomeList.{Parser, GitHub}
+  alias AwesomeElixir.AwesomeList.{Repository, Parser, GitHub}
 
   def import(url) do
     fetch_list(url)
     |> import_list
+    |> filter_imported
     |> delete_unlisted_repositories
     |> update_stats
   end
@@ -16,11 +17,13 @@ defmodule AwesomeElixir.AwesomeList.Importer do
     |> Parser.parse
   end
 
-  defp import_list(list) do
-    Enum.map(list, &import_repository/1)
+  defp import_list(parsed_list) do
+    for {section_struct, link_struct} <- parsed_list, String.match?(link_struct.url, ~r[^https://github.com]) do
+      import_repository(section_struct, link_struct)
+    end
   end
 
-  defp import_repository({section_struct, link_struct}) do
+  defp import_repository(section_struct, link_struct) do
     with {:ok, section} <- create_section(section_struct),
          {:ok, repository} <- create_repository(link_struct, section)
     do
@@ -30,15 +33,19 @@ defmodule AwesomeElixir.AwesomeList.Importer do
     end
   end
 
+  defp filter_imported(list) do
+    Enum.filter(list, &match?(%Repository{}, &1))
+  end
+
   defp delete_unlisted_repositories(list) do
     current_repositories_names = AwesomeList.list_repositories_names()
-    new_names = Enum.map(list, fn({_, repository}) -> repository.name end)
+    new_names = Enum.map(list, &(&1.name))
     unlisted_names = current_repositories_names -- new_names
     AwesomeList.delete_repositories_with_names(unlisted_names)
   end
 
   defp update_stats(list) do
-    for repository <- AwesomeList.list_repositories, String.match?(repository.url, ~r[^https://github.com]) do
+    for repository <- list do
       with {:ok, attrs} <- GitHub.get_repo_stats(repository.url)
       do
         AwesomeList.update_repository(repository, attrs)
