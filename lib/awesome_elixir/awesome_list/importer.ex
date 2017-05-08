@@ -2,17 +2,27 @@ defmodule AwesomeElixir.AwesomeList.Importer do
   alias AwesomeElixir.AwesomeList
   alias AwesomeElixir.AwesomeList.{Repository, Parser, GitHub}
 
-  def import(url) do
-    fetch_list(url)
+  def import(list) do
+    list
+    |> parse_list
     |> import_list
     |> filter_imported
     |> delete_unlisted_repositories
-    |> update_stats
+    |> update_github_stats
   end
 
-  defp fetch_list(url) do
-    response = Tesla.get(url)
-    response.body
+  defp update_github_stats(list) do
+    for repository <- list do
+      with {:ok, attrs} <- GitHub.get_repo_stats(repository.url)
+      do
+        AwesomeList.update_repository(repository, attrs)
+      end
+    end
+  end
+
+
+  defp parse_list(list) do
+    list
     |> String.split("\n")
     |> Parser.parse
   end
@@ -42,15 +52,7 @@ defmodule AwesomeElixir.AwesomeList.Importer do
     new_names = Enum.map(list, &(&1.name))
     unlisted_names = current_repositories_names -- new_names
     AwesomeList.delete_repositories_with_names(unlisted_names)
-  end
-
-  defp update_stats(list) do
-    for repository <- list do
-      with {:ok, attrs} <- GitHub.get_repo_stats(repository.url)
-      do
-        AwesomeList.update_repository(repository, attrs)
-      end
-    end
+    list
   end
 
   defp create_section(section) do

@@ -1,6 +1,8 @@
 defmodule AwesomeElixir.AwesomeList.Scheduler do
   use GenServer
 
+  alias AwesomeElixir.AwesomeList.Tasks
+
   @interval 12 * 60 * 60 * 1000 # 12 hours
 
   def start_link do
@@ -9,13 +11,13 @@ defmodule AwesomeElixir.AwesomeList.Scheduler do
 
   def init(state) do
     schedule_work()
+    Tasks.start_import_task
+
     {:ok, state}
   end
 
   def handle_info(:work, state) do
-    Task.Supervisor.start_child(AwesomeElixir.TaskSupervisor, fn ->
-      AwesomeElixir.AwesomeList.Importer.import(Application.get_env(:awesome_elixir, :awesome_list_url))
-    end)
+    Tasks.start_import_task
 
     schedule_work()
     {:noreply, state}
