@@ -20,7 +20,6 @@ defmodule AwesomeElixir.AwesomeList.Importer do
     end
   end
 
-
   defp parse_list(list) do
     list
     |> String.split("\n")

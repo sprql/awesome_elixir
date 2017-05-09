@@ -26,7 +26,7 @@ defmodule AwesomeElixir.AwesomeList do
     |> Repo.preload(:section)
   end
 
-  def list_repositories_names() do
+  def list_repositories_names do
     Repo.all(from r in Repository, select: r.name)
   end
 
