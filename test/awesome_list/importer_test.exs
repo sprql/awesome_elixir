@@ -2,14 +2,14 @@ defmodule AwesomeElixir.AwesomeList.ImporterTest do
   use AwesomeElixir.DataCase
 
   alias AwesomeElixir.AwesomeList
-  alias AwesomeElixir.AwesomeList.{Parser, Importer}
+  alias AwesomeElixir.AwesomeList.{Importer}
 
   describe "import/1" do
     setup do
       {:ok, section} = AwesomeList.create_section(%{name: "test", description: "test"})
       {:ok, repository} = AwesomeList.create_repository(%{name: "test-lib-name", url: "https://github.com/test", description: "test", section_id: section.id})
 
-      list = build_md_list
+      list = build_md_list()
 
       {:ok, list: list, repository: repository}
     end
